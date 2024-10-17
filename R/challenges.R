@@ -20,13 +20,6 @@ un <- function(m) {
 #' @return A numerical vector containing the longest continuous increasing subset
 #' @export
 deux <- function(x) {
-    d <- diff(x) > 1
-    r <- shift(ranges(Rle(d)), 1L)
-    i <- r[which.max(width(r))]
-    extractROWS(x, i)
-}
-
-deux2 <- function(x) {
     d <- c(FALSE, diff(x) > 0)
     dd <- diff(c(d, FALSE))
     starts <- which(dd > 0L)
