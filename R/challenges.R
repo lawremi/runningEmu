@@ -19,28 +19,20 @@ un <- function(m) {
 #' @param vec Numerical vector with no missing values
 #' @return A numerical vector containing the longest continuous increasing subset
 #' @export
-deux <- function(vec) {
-  longest_seq <- c(vec[1])  # Longest increasing subsequence found
-  current_seq <- c(vec[1])  # Current increasing subsequence
+deux <- function(x) {
+    d <- diff(x) > 1
+    r <- shift(ranges(Rle(d)), 1L)
+    i <- r[which.max(width(r))]
+    extractROWS(x, i)
+}
 
-  for (i in 2:length(vec)) {
-    if (vec[i] > vec[i - 1]) {
-      # Continue current increasing subsequence
-      current_seq <- c(current_seq, vec[i])
-    } else {
-      # Compare and reset current subsequence
-      if (length(current_seq) > length(longest_seq)) {
-        longest_seq <- current_seq
-      }
-      current_seq <- c(vec[i])  # Start a new subsequence
-    }
-  }
-
-  if (length(current_seq) > length(longest_seq)) {
-    longest_seq <- current_seq
-  }
-  
-  return(longest_seq)
+deux2 <- function(x) {
+    d <- c(FALSE, diff(x) > 0)
+    dd <- diff(c(d, FALSE))
+    starts <- which(dd > 0L)
+    ends <- which(dd < 0L)
+    m <- which.max(ends - starts)
+    x[seq(starts[m], ends[m])]
 }
 
 #' @title Third
